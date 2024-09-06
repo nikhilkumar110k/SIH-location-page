@@ -23,10 +23,10 @@ class WelcomeScreen2 extends StatelessWidget {
                 image: AssetImage('images/Illustration.png'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
-                'Find Balance with MoodCare: Your Holistic Mental Wellness Solution',
+                'Find Balance with SpotSync',
                 textAlign: TextAlign.center,
                 style: kWelcomeHeadingText,
               ),
@@ -39,11 +39,10 @@ class WelcomeScreen2 extends StatelessWidget {
                 int sensitivity = 8;
                 if (details.delta.dx > sensitivity) {
                   // Right Swipe
-                  Navigator.pushReplacementNamed(context, WelcomeScreen1.id);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen1()));
                 } else if (details.delta.dx < -sensitivity) {
                   //Left Swipe
-                  Navigator.pushReplacementNamed(context, WelcomeScreen3.id);
-                }
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen3()));                }
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0),
@@ -52,15 +51,14 @@ class WelcomeScreen2 extends StatelessWidget {
                   decoration: kBottomContainer,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 25.0),
                         child: SegmentedControl(index: 2,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 40.0),
+                      const Padding(
+                        padding: EdgeInsets.all(20),
                         child: Text(
-                          "Empowering You to Thrive Amidst Life's Challenges.",
+                          "Empowering You to Thrive Amidst Corporate challenges.",
                           textAlign: TextAlign.center,
                           style: kWelcomeText,
                         ),

@@ -124,16 +124,19 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
               Center(
                 child: _isValueTrue==true
                     ? Lottie.asset(
-                  'images/Animation - 1725657595635.json',
+                  'images/0lodmNbkGD.json',
                   controller: _animationController,
-                  height: 200,
-                  width: 200,
+                  height: 400,
+                  width: 400,
+                  fit: BoxFit.fill,
+
                 )
                     : Lottie.asset(
-                  'images/Animation - 1725657761664.json',
+                  'images/Animation - 1725657761664 (1).json',
                   controller: _animationController,
-                  height: 200,
-                  width: 200,
+                  height: 400,
+                  width: 400,
+                  fit: BoxFit.fill
                 ),
               ),
               Center(

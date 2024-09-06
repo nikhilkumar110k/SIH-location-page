@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:sih_spot_sync/Login.dart';
 import 'package:sih_spot_sync/loginandsigninredirector.dart';
+import 'package:sih_spot_sync/welcome_screens/screen1.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => LoginandSignPage()),
+        MaterialPageRoute(builder: (_) => WelcomeScreen1()),
       );
     });
   }

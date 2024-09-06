@@ -16,16 +16,16 @@ class WelcomeScreen1 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
+            const Expanded(
               flex: 2,
               child: Image(
                 image: AssetImage('images/Illustration.png'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
-                'Welcome to SpotSync: Your Personalized Mental Wellness Companion',
+                'Welcome to SpotSync: Your Personalized Management Tool',
                 textAlign: TextAlign.center,
                 style: kWelcomeHeadingText,
               ),
@@ -40,7 +40,7 @@ class WelcomeScreen1 extends StatelessWidget {
                   // Right Swipe
                 } else if (details.delta.dx < -sensitivity) {
                   //Left Swipe
-                  Navigator.pushReplacementNamed(context, WelcomeScreen2.id);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen2()));
                 }
               },
               child: Padding(
@@ -50,15 +50,14 @@ class WelcomeScreen1 extends StatelessWidget {
                   decoration: kBottomContainer,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 25.0),
                         child: SegmentedControl(index: 1,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 40.0),
+                      const Padding(
+                        padding: EdgeInsets.all(20),
                         child: Text(
-                          "Navigate Stress, Anxiety, and Mood Swings with Confidence and Support.",
+                          "Manage Your Employees in one GO with this App",
                           textAlign: TextAlign.center,
                           style: kWelcomeText,
                         ),

@@ -21,10 +21,10 @@ class WelcomeScreen3 extends StatelessWidget {
                 image: AssetImage('images/Illustration.png'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
-                'Discover Serenity: Your Sanctuary for Mental Health',
+                'Discover Serenity: Your Sanctuary for Managing People',
                 textAlign: TextAlign.center,
                 style: kWelcomeHeadingText,
               ),
@@ -36,12 +36,9 @@ class WelcomeScreen3 extends StatelessWidget {
               onHorizontalDragUpdate: (details) {
                 int sensitivity = 8;
                 if (details.delta.dx > sensitivity) {
-                  // Right Swipe
-                  Navigator.pushReplacementNamed(context, WelcomeScreen2.id);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen2()));
                 } else if (details.delta.dx < -sensitivity) {
-                  //Left Swipe
-                  Navigator.pushReplacementNamed(context, WelcomeScreen3.id);
-                }
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginandSignPage()));                }
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0),
@@ -50,15 +47,14 @@ class WelcomeScreen3 extends StatelessWidget {
                   decoration: kBottomContainer,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 25.0),
                         child: SegmentedControl(index: 3,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 40.0),
+                      const Padding(
+                        padding: EdgeInsets.all(40),
                         child: Text(
-                          "Guiding You Towards Inner Peace and Emotional Resilience.",
+                          "Guide Yourself with the management in Your Device.",
                           textAlign: TextAlign.center,
                           style: kWelcomeText,
                         ),
@@ -71,7 +67,7 @@ class WelcomeScreen3 extends StatelessWidget {
                                 const EdgeInsets.only(left: 20.0, right: 15.0),
                             child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginandSignPage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginandSignPage()));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.grey,
