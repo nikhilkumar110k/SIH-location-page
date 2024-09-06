@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'Login.dart';
 import 'UserModel.dart';
 import 'package:http/http.dart' as http;
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -107,126 +108,136 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blueAccent,
+        color: Colors.white,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'images/Illustration.png',
-                width: double.infinity,
-                height: 177,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Create Account',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'images/Illustration.png',
+                  width: double.infinity,
+                  height: 177,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Create Account',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 40),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        color: Colors.white,
-                        child: TextField(
-                          controller: userId,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'Enter User ID',
-                            hintStyle: Theme.of(context).textTheme.labelMedium,
-                            contentPadding: const EdgeInsets.all(10.0),
-                            border: InputBorder.none,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black,width: 2),
+                            borderRadius: BorderRadius.circular(15)
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        color: Colors.white,
                           child: TextField(
-                            controller: emailController,
+                            controller: userId,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: 'Email Text',
+                              hintText: 'Enter User ID',
                               hintStyle: Theme.of(context).textTheme.labelMedium,
                               contentPadding: const EdgeInsets.all(10.0),
                               border: InputBorder.none,
                             ),
                           ),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        color: Colors.white,
-                        child: TextField(
-                          controller: passwordController,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            hintStyle: Theme.of(context).textTheme.labelMedium,
-                            contentPadding: const EdgeInsets.all(10.0),
-                            border: InputBorder.none,
+                    const SizedBox(width: 10),
+                  ],
+                ),
+                SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black,width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                            child: TextField(
+                              controller: emailController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                hintText: 'Email Text',
+                                hintStyle: Theme.of(context).textTheme.labelMedium,
+                                contentPadding: const EdgeInsets.all(10.0),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          child: TextField(
+                            controller: passwordController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              hintStyle: Theme.of(context).textTheme.labelMedium,
+                              contentPadding: const EdgeInsets.all(10.0),
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              SizedBox(height: 20,),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+                SizedBox(height: 20,),
 
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      checkValues();
-                      _saveData();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                      textStyle: const TextStyle(fontSize: 18, color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        checkValues();
+                        _saveData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
+                      child: const Text('Create account', style: TextStyle(color: Colors.white)),
                     ),
-                    child: const Text('Create account', style: TextStyle(color: Colors.white)),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
       ),
       bottomNavigationBar: Container(
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

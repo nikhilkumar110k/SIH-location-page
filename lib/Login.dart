@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sih_spot_sync/Homepage.dart';
 
 import 'SignUpPage.dart';
 import 'UserModel.dart';
@@ -50,8 +51,11 @@ class _LoginPageState extends State<LoginPage> {
         UserModel userModel =
         UserModel.fromMap(userData.data() as Map<String, dynamic>);
         var snackbar = const SnackBar(content: Text("Sucessfully made the login!"));
-        Navigator.push(context,  MaterialPageRoute(builder: (context) => SignUpPage(),));
+        Navigator.push(context,  MaterialPageRoute(builder: (context) => const Homepage(),));
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }else{
+        var snackbar1 = const SnackBar(content: Text("Please Verify the Mail!"));
+        ScaffoldMessenger.of(context).showSnackBar(snackbar1);
       }
       if(credential.user!.isAnonymous){
         AlertDialog alertbox= AlertDialog(
@@ -81,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blueAccent,
+        color: Colors.white,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(15)
+                        ),
                         child: TextField(
                           controller: passwordController,
                           keyboardType: TextInputType.text,
@@ -176,6 +183,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       bottomNavigationBar: Container(
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
