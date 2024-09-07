@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> employeeidandsecret() async {
     try {
-      Uri uri = Uri.parse('https://spotsync.tg-tool.tech/api/verify');
+      Uri uri = Uri.parse("https://spotsync.tg-tool.tech/api/verify");
       final response = await http.post(
         uri,
         headers: {
@@ -48,11 +48,6 @@ class _SignUpPageState extends State<SignUpPage> {
           "employeeId": userId.text
         }),
       );
-
-      print("Request URL: $uri");
-      print("Request Body: ${jsonEncode({"employeeId": userId.text})}");
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
         print('API worked!');
@@ -66,6 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
             employeeSecret = data["employeeSecret"];
             employeeid = data["employeeId"];
           });
+
 
           print("employeeSecret: $employeeSecret");
           print("employeeId: $employeeid");
@@ -82,8 +78,11 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  Future<void> _saveData() async {
-    await employeeidandsecret(); // Ensure this completes first
+
+
+  void _saveData() async {
+    await employeeidandsecret();
+
 
     final url = Uri.parse('https://team007-dc442.firebaseio.com/userdata.json');
 
@@ -101,15 +100,6 @@ class _SignUpPageState extends State<SignUpPage> {
         }),
       );
 
-      print("Save Request URL: $url");
-      print("Save Request Body: ${json.encode({
-        'employeesecret': employeeSecret,
-        'employeeidfrombackend': employeeid,
-        'email': emailController.text,
-      })}");
-      print("Save Response Status Code: ${response.statusCode}");
-      print("Save Response Body: ${response.body}");
-
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data Saved!')),
@@ -124,7 +114,6 @@ class _SignUpPageState extends State<SignUpPage> {
       );
     }
   }
-
 
 
 
