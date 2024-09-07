@@ -19,7 +19,9 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController userId = TextEditingController();
-
+  String? employeeSecret;
+  String? message;
+  String? employeeid;
   TextEditingController passwordController = TextEditingController();
   void checkValues() {
     String email = emailController.text.trim();
@@ -31,56 +33,102 @@ class _SignUpPageState extends State<SignUpPage> {
       const snackbar = SnackBar(content: Text("Signup successful!"));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       signUp(email, password);
-      AlertDialog alertbox= AlertDialog(
-        title: const Text("Please Proceed to Login"),
-        actions:
-        <Widget>[
-          TextButton(onPressed: ()async{
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-
-          }, child: const Text("Ok"),),
-          TextButton(onPressed: (){
-            exit(0);
-          }, child: const Text("Leave the App"))
-        ],
-      );
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alertbox;
-        },
-      );
     }
   }
 
-  void _saveData() async {
+  Future<void> employeeidandsecret() async {
+    try {
+      Uri uri = Uri.parse('https://spotsync.tg-tool.tech/api/verify');
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "employeeId": userId.text
+        }),
+      );
+
+      print("Request URL: $uri");
+      print("Request Body: ${jsonEncode({"employeeId": userId.text})}");
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        print('API worked!');
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+
+        if (responseBody["message"] == "Employee found") {
+          print("Employee found");
+
+          final Map<String, dynamic> data = responseBody['body'];
+          setState(() {
+            employeeSecret = data["employeeSecret"];
+            employeeid = data["employeeId"];
+          });
+
+          print("employeeSecret: $employeeSecret");
+          print("employeeId: $employeeid");
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        } else {
+          print('Employee not found');
+        }
+      } else {
+        throw Exception('Failed to load the entries. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error fetching API: $e");
+    }
+  }
+
+  Future<void> _saveData() async {
+    await employeeidandsecret(); // Ensure this completes first
 
     final url = Uri.parse('https://team007-dc442.firebaseio.com/userdata.json');
 
     try {
+      print("employeeSecret: $employeeSecret");
+      print("employeeidfrombackend: $employeeid");
+
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
+          'employeesecret': employeeSecret,
+          'employeeidfrombackend': employeeid,
           'email': emailController.text,
-          'userId':userId.text
         }),
       );
+
+      print("Save Request URL: $url");
+      print("Save Request Body: ${json.encode({
+        'employeesecret': employeeSecret,
+        'employeeidfrombackend': employeeid,
+        'email': emailController.text,
+      })}");
+      print("Save Response Status Code: ${response.statusCode}");
+      print("Save Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data Saved!')),
         );
       } else {
-        throw Exception('Failed to save Data');
+        throw Exception('Failed to save Data. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print(error);
+      print("Error saving data: $error");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to save Data')),
       );
     }
   }
+
+
+
+
+
 
   void signUp(String email, String password) async {
     UserCredential? credential;
