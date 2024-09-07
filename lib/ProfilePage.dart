@@ -88,317 +88,265 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
       appBar: AppBar(
         title: Text("Profile Page"),
       ),
-        body: Container(
-        height: MediaQuery.sizeOf(context).height*0.5,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
+        body:SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          padding: EdgeInsets.symmetric(vertical: 50),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Edit Profile Image",
-                style:Theme.of(context).textTheme.headlineMedium,
-              ),
-              Center(
-                child: DottedBorder(
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(13),
-                  dashPattern: const [6, 3],
-                  color: Colors.red,
-                  strokeWidth: 2,
-                  child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width*0.9,
-                    height: MediaQuery.sizeOf(context).height*0.2,
-                    child:   Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red,width: 2),
-                              borderRadius: BorderRadius.circular(6)
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Profile",
+                  style:Theme.of(context).textTheme.headlineMedium,
+                ),
+                Center(
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(100),
+                    dashPattern: const [6, 3],
+                    color: Colors.black,
+                    strokeWidth: 2,
+                    child: SizedBox(
+                      height: MediaQuery.sizeOf(context).height*0.2,
+                      child:   Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            width: MediaQuery.sizeOf(context).width*0.40,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Center(
+                                    child: IconButton(
+                                    onPressed: () {
+                                      AlertDialog alertbox= AlertDialog(
+                                        title: const Text("Please verify your gmailID"),
+                                        actions:
+                                        <Widget>[
+                                          TextButton(onPressed: ()async{
+                                            selectImage(ImageSource.gallery);
+                                          }, child: const Text("From the Gallery"),),
+                                          TextButton(onPressed: (){
+                                            selectImage(ImageSource.camera);
+                                          }, child: const Text("From the Camera"))
+                                        ],
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return alertbox;
+                                        },
+                                      );
+                                      selectImage(ImageSource.gallery);
+                                    },
+                                    icon: Center(child: Icon(Icons.person, size: 120,)),                                     ),
+                                  ),)
+                              ],
+                            ),
                           ),
-                          padding: const EdgeInsets.all(5),
-                          width: MediaQuery.sizeOf(context).width*0.40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(Icons.file_copy,color: Colors.red,),
-                              Flexible(child: ElevatedButton(
-                                onPressed: () {
-                                  selectImage(ImageSource.gallery);
-                                },
-                                child: const Text('Choose File'),
-                              ),)
-                            ],
-                          ),
-                        ),
-                        const Text("Or"),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red,width: 2),
-                              borderRadius: BorderRadius.circular(6)
-                          ),
-                          padding: const EdgeInsets.all(5),
-                          width: MediaQuery.sizeOf(context).width*0.40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(Icons.camera_alt_outlined,color: Colors.red,),
-                              Flexible(child: ElevatedButton(
-                                onPressed: () {
-                                  selectImage(ImageSource.camera);
-                                },
-                                child: const Text('Open Camera'),
-                              ),)                        ],
-                          ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-      
-                children: [
-                  Row(
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
                     children: [
-                      Text(
-                        "Mobile Number",
-                        style: Theme.of(context).textTheme.headlineMedium,
+                      Row(
+                        children: [
+                          Text(
+                            "Employment ID",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: 20),
+                          const Icon(
+                            Icons.verified_outlined,
+                            color: Colors.red,
+                            size: 25,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 20),
-                      const Icon(
-                        Icons.verified_outlined,
-                        color: Colors.red,
-                        size: 25,
+                      const SizedBox(height: 5),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                                child: TextField(
+                                  controller: mobileNumber,
+                                  keyboardType: TextInputType.phone,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your ID',
+                                    hintStyle: Theme.of(context).textTheme.labelMedium,
+                                    contentPadding: const EdgeInsets.all(10.0),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 2),
-                      borderRadius: BorderRadius.circular(12),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Company Address",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: address,
+                                readOnly: true,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Your Company Address',
+                                  hintStyle: Theme.of(context).textTheme.labelMedium,
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      Text(
+                        "Role",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: city,
+                                readOnly: true,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: 'Your Role',
+                                  hintStyle: Theme.of(context).textTheme.labelMedium,
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+                    Text(
+                      "email",
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.red, width: 2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
                             child: TextField(
-                              controller: mobileNumber,
-                              keyboardType: TextInputType.phone,
+                              controller: state,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: 'Enter your number',
+                                hintText: 'Enter Your New Email',
                                 hintStyle: Theme.of(context).textTheme.labelMedium,
                                 contentPadding: const EdgeInsets.all(10.0),
                                 border: InputBorder.none,
                               ),
                             ),
                           ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            alignment: AlignmentDirectional.center,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {
-                          },
-                          child: Text(
-                            'Change',
-                            style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-      
-                children: [
-                  Text(
-                    "Address",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: address,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Enter Your New Address',
-                              hintStyle: Theme.of(context).textTheme.labelMedium,
-                              contentPadding: const EdgeInsets.all(10.0),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-      
-                children: [
-                  Text(
-                    "City",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: city,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Enter Your New City',
-                              hintStyle: Theme.of(context).textTheme.labelMedium,
-                              contentPadding: const EdgeInsets.all(10.0),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-      
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-      
-                children: [
-                  Text(
-                    "State",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: state,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Enter Your New State',
-                              hintStyle: Theme.of(context).textTheme.labelMedium,
-                              contentPadding: const EdgeInsets.all(10.0),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-      
-      
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-      
-                children: [
-                  Text(
-                    "Pincode",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: pinCode,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Enter Your New PinCode',
-                              hintStyle: Theme.of(context).textTheme.labelMedium,
-                              contentPadding: const EdgeInsets.all(10.0),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-      
-      
-      
-      
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: MediaQuery.sizeOf(context).width*0.1,),
-                  ElevatedButton(
-                    onPressed: () {
-                      editYourBasicDetails();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(200, 40),
-                      backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        ],
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 24),
                     ),
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: MediaQuery.sizeOf(context).width*0.1,),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 35.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            editYourBasicDetails();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(200, 40),
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 24),
+                          ),
+                          child: const Text(
+                            "Save",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }
