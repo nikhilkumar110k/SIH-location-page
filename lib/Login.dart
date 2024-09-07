@@ -1,17 +1,12 @@
-import 'dart:io';
-import 'InformationPage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sih_spot_sync/Homepage.dart';
-
+import 'Homepage.dart';
 import 'SignUpPage.dart';
-import 'UserModel.dart';
+import 'loginandsigninredirector.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +18,62 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  checkValues() {
+
+  Future<void> removeInvalidUsers() async {
+    final url = Uri.parse('https://team007-dc442.firebaseio.com/userdata.json');
+
+    try {
+      final response = await http.get(url);
+      print("Fetch Response Status Code: ${response.statusCode}");
+      print("Fetch Response Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> allUsers = json.decode(response.body);
+
+        for (var userId in allUsers.keys) {
+          final userData = allUsers[userId];
+          if (userData['employeeidfrombackend'] == null || userData['employeesecret'] == null) {
+            await _removeUser(userId);
+            _logoutUser();
+          }
+          if (userData['employeeidfrombackend'] != null || userData['employeesecret'] != null) {
+            checkValues();
+          }
+        }
+      } else {
+        throw Exception('Failed to fetch users. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
+  void _logoutUser() {
+    FirebaseAuth.instance.signOut().then((_) {
+      print("User logged out successfully");
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginandSignPage()));
+    }).catchError((error) {
+      print("Error logging out: $error");
+    });
+  }
+
+  Future<void> _removeUser(String userId) async {
+    final deleteUrl = Uri.parse('https://team007-dc442.firebaseio.com/userdata/$userId.json');
+
+    try {
+      final response = await http.delete(deleteUrl);
+
+      if (response.statusCode == 200) {
+        print("User data removed successfully");
+      } else {
+        throw Exception('Failed to remove user data. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print("Error removing user data: $error");
+    }
+  }
+
+  void checkValues() {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     if (email == "" || password == "") {
@@ -34,51 +84,34 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  logiIn(String email, String password) async {
-    UserCredential? credential;
+  Future<void> logiIn(String email, String password) async {
     try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
-        credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (ex) {
-      var snackbar = SnackBar(content: Text(ex.message.toString()));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    }
-    if(credential!.user!.emailVerified){
-      if (credential != null) {
-        String uid = credential.user!.uid;
-        DocumentSnapshot userData =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-        UserModel userModel =
-        UserModel.fromMap(userData.data() as Map<String, dynamic>);
-        var snackbar = const SnackBar(content: Text("Sucessfully made the login!"));
-        Navigator.push(context,  MaterialPageRoute(builder: (context) => Informationpage(),));
-        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      }else{
-        var snackbar1 = const SnackBar(content: Text("Please Verify the Mail!"));
-        ScaffoldMessenger.of(context).showSnackBar(snackbar1);
-      }
-      if(credential.user!.isAnonymous){
-        AlertDialog alertbox= AlertDialog(
-          title: const Text("Please verify your gmailID"),
-          actions:
-          <Widget>[
-            TextButton(onPressed: ()async{
-              openAppSettings();
-            }, child: const Text("Ok"),),
-            TextButton(onPressed: (){
-              exit(0);
-            }, child: const Text("Leave the App"))
-          ],
-        );
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return alertbox;
-          },
+      if (credential.user != null) {
+        if (credential.user!.emailVerified) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Successfully logged in!"))
+          );
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Homepage())
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Please verify your email!"))
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Login failed."))
         );
       }
-
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()))
+      );
     }
   }
 
@@ -141,8 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2),
-                          borderRadius: BorderRadius.circular(15)
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(15)
                         ),
                         child: TextField(
                           controller: passwordController,
@@ -168,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: ElevatedButton(
                     onPressed: () {
+                      removeInvalidUsers();
                       checkValues();
                     },
                     style: ElevatedButton.styleFrom(
@@ -213,4 +247,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
