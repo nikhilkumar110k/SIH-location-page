@@ -36,9 +36,44 @@ class WelcomeScreen3 extends StatelessWidget {
               onHorizontalDragUpdate: (details) {
                 int sensitivity = 8;
                 if (details.delta.dx > sensitivity) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen2()));
-                } else if (details.delta.dx < -sensitivity) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginandSignPage()));                }
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => WelcomeScreen2(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = 0.0;
+                        const end = 1.0;
+                        const curve = Curves.easeInOut;
+
+                        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        final fadeAnimation = animation.drive(tween);
+
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );                } else if (details.delta.dx < -sensitivity) {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => LoginandSignPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = 0.0;
+                        const end = 1.0;
+                        const curve = Curves.easeInOut;
+
+                        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        final fadeAnimation = animation.drive(tween);
+
+                        return FadeTransition(
+                          opacity: fadeAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );                }
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0),
@@ -49,7 +84,7 @@ class WelcomeScreen3 extends StatelessWidget {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(top: 25.0),
-                        child: SegmentedControl(index: 3,),
+                        child: SegmentedControl(initialIndex: 2,),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(40),
@@ -67,8 +102,25 @@ class WelcomeScreen3 extends StatelessWidget {
                                 const EdgeInsets.only(left: 20.0, right: 15.0),
                             child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginandSignPage()));
-                                },
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) => LoginandSignPage(),
+                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                        const begin = 0.0;
+                                        const end = 1.0;
+                                        const curve = Curves.easeInOut;
+
+                                        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                        final fadeAnimation = animation.drive(tween);
+
+                                        return FadeTransition(
+                                          opacity: fadeAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.grey,
                                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -88,8 +140,25 @@ class WelcomeScreen3 extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginandSignPage()));
-                                  },
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) => LoginandSignPage(),
+                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                          const begin = 0.0;
+                                          const end = 1.0;
+                                          const curve = Curves.easeInOut;
+
+                                          final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                          final fadeAnimation = animation.drive(tween);
+
+                                          return FadeTransition(
+                                            opacity: fadeAnimation,
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
                                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
