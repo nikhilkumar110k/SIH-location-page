@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'InformationPage.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,14 +13,14 @@ import 'package:sih_spot_sync/Homepage.dart';
 import 'SignUpPage.dart';
 import 'UserModel.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class Informationpage extends StatefulWidget {
+  const Informationpage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<Informationpage> createState() => _InformationpageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _InformationpageState extends State<Informationpage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   checkValues() {
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     UserCredential? credential;
     try {
 
-        credential = await FirebaseAuth.instance
+      credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
       var snackbar = SnackBar(content: Text(ex.message.toString()));
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         UserModel userModel =
         UserModel.fromMap(userData.data() as Map<String, dynamic>);
         var snackbar = const SnackBar(content: Text("Sucessfully made the login!"));
-        Navigator.push(context,  MaterialPageRoute(builder: (context) => Informationpage(),));
+        Navigator.push(context,  MaterialPageRoute(builder: (context) => const Homepage(),));
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }else{
         var snackbar1 = const SnackBar(content: Text("Please Verify the Mail!"));
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20),
               Text(
-                'Enter The Information',
+                'Create Account',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 40),
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: emailController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: 'Email',
+                            hintText: 'Employee ID  ',
                             hintStyle: Theme.of(context).textTheme.labelMedium,
                             contentPadding: const EdgeInsets.all(10.0),
                             border: InputBorder.none,
@@ -141,14 +141,14 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2),
-                          borderRadius: BorderRadius.circular(15)
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(15)
                         ),
                         child: TextField(
                           controller: passwordController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: 'Employee Secret',
                             hintStyle: Theme.of(context).textTheme.labelMedium,
                             contentPadding: const EdgeInsets.all(10.0),
                             border: InputBorder.none,
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(width: 10),
                 ],
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
 
               SizedBox(
                 width: double.infinity,
@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text('Login', style: TextStyle(color: Colors.white)),
+                    child: const Text('Next', style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ),

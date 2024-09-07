@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Image.asset(
                   'images/Illustration.png',
                   width: double.infinity,
-                  height: 177,
+                  height: 165,
                 ),
                 SizedBox(height: 20),
                 Text(

@@ -53,20 +53,7 @@ Column(
      Text("Organisation",style: TextStyle(color: Colors.black),)
   ]
  )
-)
-            ,            InkWell(
-onTap: () => {
-  Navigator.push(context, MaterialPageRoute(builder: (context)=> Profilepage()))
-},child: const
-Column(
- mainAxisSize: MainAxisSize.min,
-  children:[
-     Icon(Icons.person, color: Colors.grey),
-     Text("Profile",style: TextStyle(color: Colors.black),)
-  ]
- )
-)
-            ,        
+),
           ],
         ),
       );

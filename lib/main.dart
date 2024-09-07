@@ -16,6 +16,8 @@ void main() async {
           apiKey: "AIzaSyBe-YjLqjQgAmXmzQzFweeFLoXKdId7v6w",
           appId: "1:556248166395:web:f2cbe97fe6c1034cb2e55e",
           messagingSenderId: "556248166395",
+          databaseURL: "https://team007-dc442.firebaseio.com/",
+          storageBucket: "gs://team007-dc442.appspot.com",
           projectId: "team007-dc442"));
   runApp(const MyApp());
 }

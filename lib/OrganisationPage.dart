@@ -89,7 +89,7 @@ class _OrganisationPageState extends State<OrganisationPage> {
                                 colorformarkattendance=false;
                               });
                             },
-                            child: Flexible(child: const Text('Mark Attendance')),
+                            child: Flexible(child: const Text('Check out')),
                           ),
                         ) :
                         ElevatedButton(
