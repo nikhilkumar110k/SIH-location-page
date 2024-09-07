@@ -10,6 +10,7 @@ class OrganisationPage extends StatefulWidget {
 }
 
 class _OrganisationPageState extends State<OrganisationPage> {
+  bool colorformarkattendance= false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,16 +77,34 @@ class _OrganisationPageState extends State<OrganisationPage> {
                           ),
                         ),
                       ),
-                      Flexible(
-                        child: ElevatedButton(
+                      SizedBox(
+                        child: colorformarkattendance==true ? Flexible(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.green,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                colorformarkattendance=false;
+                              });
+                            },
+                            child: Flexible(child: const Text('Mark Attendance')),
+                          ),
+                        ) :
+                        ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.red,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              colorformarkattendance=true;
+                            });
+                          },
                           child: Flexible(child: const Text('Mark Attendance')),
                         ),
-                      ),
+                        ),
                     ],),
                     SizedBox(height: 10),
                     Row(

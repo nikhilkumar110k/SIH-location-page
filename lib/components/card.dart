@@ -18,40 +18,42 @@ class CardWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 25),
       child: SizedBox(
-        height: 220,
+        height: 150,
         width: 150,
-        child: Card(
-          elevation: 4,
-          color: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  heading,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(20)),
+          child: Card(
+            elevation: 4,
+            color: color,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    heading,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                if (mood != null) ...[
-                  mood!,
-                  SizedBox(height: 10),
+                  if (mood != null) ...[
+                    mood!,
+                    SizedBox(height: 10),
+                  ],
+                  Text(
+                    subText,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  ),
                 ],
-                Text(
-                  subText,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

@@ -6,6 +6,8 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sih_spot_sync/components/bottom_bar.dart';
 
+import 'components/card.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -113,46 +115,94 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text("Welcome!, ${loadedEntries.isNotEmpty ? loadedEntries.join(', ') : 'User'}"),
       ),
       bottomNavigationBar: Bottom_Bar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: _isValueTrue==true
-                    ? Lottie.asset(
-                  'images/0lodmNbkGD.json',
-                  controller: _animationController,
-                  height: 400,
-                  width: 400,
-                  fit: BoxFit.fill,
+              Column(
+                children: [
+                  Center(
+                    child: _isValueTrue==true
+                        ? Lottie.asset(
+                      'images/0lodmNbkGD.json',
+                      controller: _animationController,
+                      height: 400,
+                      width: 400,
+                      fit: BoxFit.fill,
+        
+                    )
+                        : Lottie.asset(
+                      'images/Animation - 1725657761664 (1).json',
+                      controller: _animationController,
+                      height: 400,
+                      width: 400,
+                      fit: BoxFit.fill
+                    ),
+                  ),
+                  Center(
+                      child: Text(_isValueTrue==true ? "Active" : "Inactive")),
+                  ElevatedButton(onPressed: (){
+                    setState(() {
+                      if(_isValueTrue==true){
+                      _isValueTrue=false;}
+                      else{
+                        _isValueTrue=true;
+                      }
+                    });
+                  }, child: Text("Change the colour")),
+                  SizedBox(
+                    child: _isValueTrue==true
+                        ? Column(
+                      children: [
+                        Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: CardWidget(color: Color.fromRGBO(80, 193, 84,100), heading: "Report", subText: "See Report"),
+                          ),
+                          CardWidget(color: Color.fromRGBO(80, 193, 84,100), heading: "Leave", subText: "Take Leave"),
+                        ],),
+                        Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: CardWidget(color: Color.fromRGBO(80, 193, 84,100), heading: "Tasks", subText: "Tasks"),
+                          ),
+                          CardWidget(color: Color.fromRGBO(80, 193, 84,100), heading: "About us", subText: "Details"),
+                        ],
+                        ),
+                      ],
+                    )
+                        : Column(
+                      children: [
+                        Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: CardWidget(color: Color.fromRGBO(255, 142, 58,100), heading: "Report", subText: "See Report"),
 
-                )
-                    : Lottie.asset(
-                  'images/Animation - 1725657761664 (1).json',
-                  controller: _animationController,
-                  height: 400,
-                  width: 400,
-                  fit: BoxFit.fill
-                ),
+                          ),
+                          CardWidget(color: Color.fromRGBO(255, 142, 58,100), heading: "Leave", subText: "Take Leave"),
+                        ],),
+                        Row(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: CardWidget(color: Color.fromRGBO(255, 142, 58,100), heading: "Tasks", subText: "Tasks"),
+                          ),
+                          CardWidget(color: Color.fromRGBO(255, 142, 58,100), heading: "About us", subText: "Details"),
+                        ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              Center(
-                  child: Text(_isValueTrue==true ? "Active" : "Inactive")),
-              ElevatedButton(onPressed: (){
-                setState(() {
-                  if(_isValueTrue==true){
-                  _isValueTrue=false;}
-                  else{
-                    _isValueTrue=true;
-                  }
-                });
-              }, child: Text("Change the colour"))
             ],
           ),
-        ],
+        ),
       ),
     );
   }

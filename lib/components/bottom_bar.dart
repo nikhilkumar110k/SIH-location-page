@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sih_spot_sync/Homepage.dart';
 import 'package:sih_spot_sync/OrganisationPage.dart';
+import 'package:sih_spot_sync/ProfilePage.dart';
 
 class Bottom_Bar extends StatefulWidget {
   @override
@@ -55,7 +56,7 @@ Column(
 )
             ,            InkWell(
 onTap: () => {
-  Navigator.push(context, MaterialPageRoute(builder: (context)=> Homepage()))
+  Navigator.push(context, MaterialPageRoute(builder: (context)=> Profilepage()))
 },child: const
 Column(
  mainAxisSize: MainAxisSize.min,
