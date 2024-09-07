@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _saveData() async {
 
-    final url = Uri.parse('https://team007-dc442.firebaseio.com/userdata.json');
+    final url = Uri.parse('');
 
     try {
       final response = await http.post(
