@@ -13,10 +13,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: "AIzaSyBe-YjLqjQgAmXmzQzFweeFLoXKdId7v6w",
-          appId: "1:556248166395:web:f2cbe97fe6c1034cb2e55e",
-          messagingSenderId: "556248166395",
-          projectId: "team007-dc442"));
+          apiKey: "",
+          appId: "",
+          messagingSenderId: "",
+          projectId: ""));
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
