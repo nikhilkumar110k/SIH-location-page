@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,86 +22,154 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  String _locationMessage = "Fetching location...";
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> data = ['John Pope J'];
-  final DateTime _focusDate = DateTime.now();
   final List<String> _items = ['Online', 'Near Me', 'Request', 'Propose'];
   final PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 1;
-  double progressValue = 87;
-  double successrate = 87;
-  bool _isValueTrue = true;
+  bool _isValueTrue = false;
   late PermissionStatus _status;
+  String loadedEntries='User';
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
+  Timer? _timer;
+
+  void startSendingLocation() {
+    _timer = Timer.periodic(const Duration(minutes: 10), (timer) async {
+      await _sendCurrentLocation();
     });
   }
-
-  Future<void> _requestLocationPermission() async {
-    final status = await Permission.locationWhenInUse.request();
-
-    if (status.isDenied || status.isPermanentlyDenied) {
-      _showPermissionDialog();
-    } else {
-      setState(() {
-        _status = status;
-      });
+  Future<void> _sendCurrentLocation() async {
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      const String employeeId = "uud2";
+      await sendLocationToBackend(position.latitude, position.longitude, employeeId);
+    } catch (e) {
+      print('Error fetching location: $e');
     }
   }
 
-  void _showPermissionDialog() {
-    AlertDialog alertbox = AlertDialog(
-      title: const Text("Please provide the necessary permissions"),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () async {
-            await openAppSettings();
-          },
-          child: const Text("OK"),
-        ),
-        TextButton(
-          onPressed: () {
-            exit(0);
-          },
-          child: const Text("Leave the App"),
-        ),
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alertbox;
-      },
-    );
+  void stopSendingLocation() {
+    Future<void> stopLocationUpdates() async {
+    try {
+    bool isServiceRunning = await Geolocator.isLocationServiceEnabled();
+    if (isServiceRunning) {
+    Geolocator.getPositionStream().listen(null).cancel();
+    print("Location updates stopped successfully.");
+    }
+    } catch (e) {
+    print('Error stopping location updates: $e');
+    }
+    }
   }
+
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _requestLocationPermission();
-    });
-
+    _requestLocationPermission();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
     _animationController.repeat();
-
     _loadData();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _positionStreamSubscription?.cancel();
+
     super.dispose();
   }
 
-  List<Map<String, dynamic>> loadedEntries = [];
+  Position? _currentPosition;
+  StreamSubscription<Position>? _positionStreamSubscription;
+
+
+
+  Future<void> _requestLocationPermission() async {
+    final status = await Permission.locationWhenInUse.request();
+
+    if (status.isGranted) {
+      _startLocationStream();
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      _showPermissionDialog();
+    }
+  }
+  Future<void> sendLocationToBackend(
+      double latitude,
+      double longitude,
+      String employeeId
+      ) async {
+    final String timestamp = DateTime.now().toUtc().toIso8601String();
+    final url = Uri.parse('https://spotsync.tg-tool.tech/api/store');
+
+    final Map<String, dynamic> locationData = {
+      "point": {
+        "lat": latitude,
+        "lng": longitude,
+      },
+      "employeeId": employeeId,
+      "timestamp": timestamp,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(locationData),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _isValueTrue=true;
+        });
+        print('Location sent successfully!');
+      } else {
+        throw Exception('Failed to send location. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print("Error sending location: $error");
+    }
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Location Permission Required"),
+          content: const Text("Please enable location permissions to access real-time location."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                openAppSettings();
+              },
+              child: const Text("Open Settings"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _startLocationStream() {
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).listen((Position position) {
+      setState(() {
+        _currentPosition = position;
+        _locationMessage = 'Lat: ${position.latitude}, Long: ${position.longitude}';
+      });
+    });
+  }
+
+
 
   Future<void> _loadData() async {
     final url = Uri.parse('https://team007-dc442.firebaseio.com/userdata.json');
@@ -107,11 +177,13 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
+      print(loadedEntries);
+
       setState(() {
-        loadedEntries = data["userID"] ?? [];
+        loadedEntries = data["employeeidfrombackend"] ?? [];
       });
     } else {
-      throw Exception('Failed to load diary entries');
+      throw Exception('Failed to load user data');
     }
   }
 
@@ -127,7 +199,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
             _scaffoldKey.currentState?.openDrawer();
           },
         ),
-        title: Text("Welcome!, ${loadedEntries.isNotEmpty ? loadedEntries.join(', ') : 'User'}"),
+        title: Text("Welcome!, ${loadedEntries.isNotEmpty ? loadedEntries+(', ') : 'User'}"),
       ),
       drawer: Drawer(
         child: ListView(
@@ -218,7 +290,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                   ),
                   Center(
                       child:
-                      Text(_isValueTrue == true ? "Active" : "Inactive")),
+                      Text(_isValueTrue == true ? "Active" : "Inactive",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
                   ElevatedButton(
                       onPressed: () {
                         setState(() {
