@@ -22,6 +22,7 @@ Future<String> convertFileToBase64(XFile file) async {
 }
 
 class _ProfileEdit1State extends State<ProfileEdit1> {
+  bool clickedornot= false;
   XFile? imageFile;
   String? base64Image;
 
@@ -96,19 +97,13 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  "Profile",
-                  style:Theme.of(context).textTheme.headlineMedium,
-                ),
                 Center(
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: const Radius.circular(100),
-                    dashPattern: const [6, 3],
-                    color: Colors.black,
-                    strokeWidth: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.black, width: 2)
+                    ),
                     child: SizedBox(
-                      height: MediaQuery.sizeOf(context).height*0.2,
                       child:   Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -151,6 +146,12 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10,),
+
+                Text(
+                  "Profile",
+                  style:Theme.of(context).textTheme.headlineMedium,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Column(
@@ -166,7 +167,7 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                           const SizedBox(height: 20),
                           const Icon(
                             Icons.verified_outlined,
-                            color: Colors.red,
+                            color: Colors.black,
                             size: 25,
                           ),
                         ],
@@ -175,7 +176,7 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.95,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.red, width: 2),
+                          border: Border.all(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -213,7 +214,7 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.95,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.red, width: 2),
+                          border: Border.all(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -252,7 +253,7 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.95,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.red, width: 2),
+                          border: Border.all(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -289,7 +290,7 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.95,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.red, width: 2),
+                        border: Border.all(color: Colors.black, width: 2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -323,18 +324,22 @@ class _ProfileEdit1State extends State<ProfileEdit1> {
                         padding: const EdgeInsets.only(left: 35.0),
                         child: ElevatedButton(
                           onPressed: () {
+                            setState(() {
+                              clickedornot=true;
+                            });
                             editYourBasicDetails();
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(200, 40),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.blueAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 24),
                           ),
-                          child: const Text(
+                          child:
+                          const Text(
                             "Save",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
