@@ -58,7 +58,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
   }
 
   void startSendingLocation() {
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+    _timer = Timer.periodic(const Duration(minutes: 10), (timer) async {
       await _sendCurrentLocation();
     });
   }
