@@ -29,19 +29,6 @@ Column(
   ]
  )
 )
-            ,
-             InkWell(
-onTap: () => {
-  Navigator.push(context, MaterialPageRoute(builder: (context)=> Homepage()))
-},child: const
-Column(
- mainAxisSize: MainAxisSize.min,
-  children:[
-     Icon(Icons.bubble_chart, color: Colors.grey),
-     Text("Colleague",style: TextStyle(color: Colors.black),)
-  ]
- )
-)
             ,            InkWell(
 onTap: () => {
   Navigator.push(context, MaterialPageRoute(builder: (context)=> const OrganisationPage()))

@@ -91,6 +91,8 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
       _showPermissionDialog();
     }
   }
+  String? name;
+
 
   void _startLocationStream() {
     _positionStreamSubscription = Geolocator.getPositionStream(
@@ -123,13 +125,14 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
     DataSnapshot snapshot = await databaseRef.child('userdata').get();
 
     String? employeeId;
-
     if (snapshot.exists && snapshot.value is Map) {
       Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
 
       for (var userData in allUsers.values) {
         if (userData is Map && userData['email'] == currentUser.email) {
           employeeId = userData['employeeidfrombackend'];
+          name= userData["email"];
+
           print("Employee ID found: $employeeId");
           break;
         }
@@ -213,7 +216,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
             _scaffoldKey.currentState?.openDrawer();
           },
         ),
-        title: Text("Welcome!, ${loadedEntries.isNotEmpty ? loadedEntries : 'User'}"),
+        title: Text("Welcome!, ${name!=null ? name : 'User'}"),
       ),
       drawer: Drawer(
         child: ListView(
@@ -225,9 +228,9 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children:  [
                   Text(
-                    "Welcome!, User",
+                    "Welcome!, ${name!=null ? name : 'User'}",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
