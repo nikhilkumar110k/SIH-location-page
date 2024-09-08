@@ -23,7 +23,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  String employeeId='uud1';
+  String employeeId='';
   String _locationMessage = "Fetching location...";
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _items = ['Online', 'Near Me', 'Request', 'Propose'];
@@ -39,12 +39,11 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    _loadData();
     _sendCurrentLocation();
     _requestLocationPermission();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(minutes: 10),
     );
     _animationController.repeat();
     startSendingLocation();
@@ -59,7 +58,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
   }
 
   void startSendingLocation() {
-    _timer = Timer.periodic(const Duration(minutes: 10), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
       await _sendCurrentLocation();
     });
   }
@@ -107,17 +106,50 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
     });
   }
 
-  Future<void> sendLocationToBackend(
-      double latitude, double longitude, String employeeId) async {
+  Future<String?> sendLocationToBackend(
+      double latitude, double longitude, String initialEmployeeId) async {
     final String timestamp = DateTime.now().toLocal().toIso8601String();
     final url = Uri.parse('https://spotsync.tg-tool.tech/api/store');
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null || currentUser.email == null) {
+      print("No user is currently signed in or email is missing.");
+      return null;
+    }
+
+    print("Current User Email: ${currentUser.email}");
+
+    DatabaseReference databaseRef = FirebaseDatabase.instance.ref();
+    DataSnapshot snapshot = await databaseRef.child('userdata').get();
+
+    String? employeeId;
+
+    if (snapshot.exists && snapshot.value is Map) {
+      Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
+
+      for (var userData in allUsers.values) {
+        if (userData is Map && userData['email'] == currentUser.email) {
+          employeeId = userData['employeeidfrombackend'];
+          print("Employee ID found: $employeeId");
+          break;
+        }
+      }
+
+      if (employeeId == null) {
+        print("No matching user data found for email: ${currentUser.email}");
+        return null;
+      }
+    } else {
+      print("No user data found in the database.");
+      return null;
+    }
 
     final Map<String, dynamic> locationData = {
       "point": {
         "lat": latitude,
         "lng": longitude,
       },
-      "employeeId": employeeId,
+      "employeeId": employeeId, // Use the retrieved employee ID
       "timestamp": timestamp,
     };
 
@@ -127,11 +159,13 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
         headers: {'Content-Type': 'application/json'},
         body: json.encode(locationData),
       );
-      if (response.statusCode == 200) {
 
-        setState(() {
-          _isValueTrue = true;
-        });
+      if (response.statusCode == 200) {
+        if (mounted) {
+          setState(() {
+            _isValueTrue = true;
+          });
+        }
         print('Location sent successfully!');
       } else {
         throw Exception('Failed to send location. Status code: ${response.statusCode}');
@@ -139,41 +173,11 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
     } catch (error) {
       print("Error sending location: $error");
     }
-  }
 
-  Future<String?> _loadData() async {
-    try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser == null || currentUser.email == null) {
-        print("No user is currently signed in or email is missing.");
-        return null;
-      }
-
-      print("Current User Email: ${currentUser.email}");
-
-      DatabaseReference databaseRef = FirebaseDatabase.instance.ref();
-      DataSnapshot snapshot = await databaseRef.child('userdata').get();
-
-      if (snapshot.exists && snapshot.value is Map) {
-        Map<dynamic, dynamic> allUsers = snapshot.value as Map<dynamic, dynamic>;
-
-        for (var userData in allUsers.values) {
-          if (userData is Map && userData['email'] == currentUser.email) {
-            String? employeeId = userData['employeeidfrombackend'];
-            print("Employee ID found: $employeeId");
-            return employeeId;
-          }
-        }
-
-        print("No matching user data found for email: ${currentUser.email}");
-      } else {
-        print("No user data found in the database.");
-      }
-    } catch (e) {
-      print("Error fetching employee ID: $e");
-    }
     return null;
   }
+
+
 
 
 
@@ -308,7 +312,6 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
               Center(
                 child: ElevatedButton(
                     onPressed: () {
-                      _loadData();
                       _sendCurrentLocation();
                       setState(() {
                         _isValueTrue = !_isValueTrue;
