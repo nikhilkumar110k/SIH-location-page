@@ -43,7 +43,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
     _requestLocationPermission();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(minutes: 10),
+      duration: const Duration(seconds:1),
     );
     _animationController.repeat();
     startSendingLocation();
@@ -149,7 +149,7 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
         "lat": latitude,
         "lng": longitude,
       },
-      "employeeId": employeeId, // Use the retrieved employee ID
+      "employeeId": employeeId,
       "timestamp": timestamp,
     };
 
@@ -308,16 +308,6 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-              ),
-              Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      _sendCurrentLocation();
-                      setState(() {
-                        _isValueTrue = !_isValueTrue;
-                      });
-                    },
-                    child: const Text("Change the colour")),
               ),
               _isValueTrue
                   ? Column(
