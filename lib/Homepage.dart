@@ -229,11 +229,13 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
-                  Text(
-                    "Welcome!, ${name!=null ? name : 'User'}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
+                  Flexible(
+                    child: Text(
+                      "Welcome!, ${name!=null ? name : 'User'}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
                   Padding(
