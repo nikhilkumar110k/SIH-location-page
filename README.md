@@ -1,16 +1,3 @@
-# sih_spot_sync
+# Location based Employee Attendance
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The project is made using flutter/dart for cross platform application. The backend is made using firebase, Nodejs/expressjs. The project is for the employees and managers who want the proper track of the attendance and employee location based attendance system. The app sends location every 10 mins from the timeframe of 9 to 5 (changeable). If the users isn't in the campus then it would show inactive. If they are then they would be shown active.
