@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBe-YjLqjQgAmXmzQzFweeFLoXKdId7v6w',
-    appId: '1:556248166395:web:f2cbe97fe6c1034cb2e55e',
-    messagingSenderId: '556248166395',
-    projectId: 'team007-dc442',
-    storageBucket: 'gs://team007-dc442.appspot.com',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBe-YjLqjQgAmXmzQzFweeFLoXKdId7v6w',
-    appId: '1:556248166395:web:f2cbe97fe6c1034cb2e55e',
-    messagingSenderId: '556248166395',
-    projectId: 'team007-dc442',
-    storageBucket: 'gs://team007-dc442.appspot.com',
-    androidClientId: '404605075093-3bm358s41cl43nsqattq1hqqp462t95d.apps.googleusercontent.com',
-    iosClientId: '404605075093-u3346ldaqpto0jej0295hrbcvo9dqcr8.apps.googleusercontent.com',
-    iosBundleId: 'com.example.rabloMobile',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+    androidClientId: '',
+    iosClientId: '',
+    iosBundleId: '',
   );
 }
